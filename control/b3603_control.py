@@ -1,4 +1,4 @@
-import serial
+﻿import serial
 import time
 
 debug = 0  # Print debug message
