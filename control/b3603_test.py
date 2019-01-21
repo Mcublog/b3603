@@ -7,7 +7,7 @@ def end_connect(cmdr):
 
 
 def main():
-	cmdr = Control('COM3')
+	cmdr = Control('COM3')  # /dev/ttyUSB0 for Linux
 	if cmdr.connection == 0:
 		return end_connect(cmdr)
 	
