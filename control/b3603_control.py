@@ -77,11 +77,11 @@ class Control:
     # Read B3603 ACK from port
     # return: array of strings or array with zero lenght
     def __read_ack(self):
-        for i in range(5):  # Waiting 500 ms maximum
+        for i in range(500):  # Waiting 500 ms maximum
             if self.__port.in_waiting:
                 break
             time.sleep(.1)  # Waiting 100 ms
-        if self.__port.in_waiting:
+        if not self.__port.in_waiting:
             print('Cmd was sent, but no response')
             return
         data = []
