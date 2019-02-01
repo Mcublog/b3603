@@ -3,6 +3,8 @@ import time
 
 debug = 0  # Print debug message
 info_msg = 1  # Print info message
+#!/usr/bin/python
+# encoding=utf8
 
 class Control:
     
@@ -15,19 +17,22 @@ class Control:
         self.__connection = False  # Connection property
         # Open Com
         try:
-            self.__port.open()
-            print("B3603 " + self.__port.port + " port is open")
-            self.__connection = True            
+            self.__port.open()       
         except IOError:
             self.__close_connect("Can't open port")
+        else:
+            print("B3603 " + self.__port.port + " port is open")
+            self.__connection = True     
 
 
     def __del__(self):
         self.__close_connect()
     
     
-    # Print info message
     def __iprint(self, msg: str):
+    """
+    Print info message 
+    """
         if info_msg:
             print(msg)
 
@@ -40,14 +45,19 @@ class Control:
             self.__port.close()
 
 
-    # Send B3603 command
-    # return: array of strings or array with zero lenght
     def send_cmd(self, cmd):
+    """
+    Send B3603 command
+    return: array of strings or array with zero lenght
+    """
         ack = []
         if self.__connection == True:  # dummy protection
             if cmd.endswith('\n') == False:
                 cmd = cmd + '\n'
-            self.__port.write(cmd.encode())
+            try:
+                self.__port.write(cmd.encode())
+            except:
+                self.__close_connect("Can't write data port")
             self.__iprint('B3603 Send cmd: ' + cmd.replace('\n', ''))
             ack = self.__read_ack()
             if debug:
@@ -60,23 +70,30 @@ class Control:
         return ack
 
 
-    # Print B3603 ACK
     def print_ack(self, data: []):
+    """
+    Print B3603 ACK
+    """
         if data:
             print('B3603 ACK:')
             for s in data:
                 print(s)
 
 
-    # Get connection status
-    # return: true if connect
     def get_status(self):
+    """
+    Get connection status
+    return: true if connect
+    """
         return self.__connection
         
         
-    # Read B3603 ACK from port
-    # return: array of strings or array with zero lenght
+
     def __read_ack(self):
+    """
+    Read B3603 ACK from port
+    return: array of strings or array with zero lenght    
+    """
         for i in range(500):  # Waiting 500 ms maximum
             if self.__port.in_waiting:
                 break

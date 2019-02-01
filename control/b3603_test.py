@@ -1,4 +1,8 @@
-﻿from time import sleep
+﻿#!/usr/bin/python
+# encoding=utf8
+
+from time import sleep
+
 from b3603_control import Control
 
 
@@ -11,7 +15,7 @@ def main():
     if cmdr.get_status() == 0:
         return close_connect(cmdr)
     
-    if cmdr.send_cmd("VOLTAGE 8000") == 0:
+    if cmdr.send_cmd("VOLTAGE 3300") == 0:
         return close_connect(cmdr)
     if cmdr.send_cmd("OUTPUT 1") == 0:
         return close_connect(cmdr)
