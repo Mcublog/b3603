@@ -15,6 +15,7 @@ def log_cmd(func):
             f.write('Send cmd: OK\r\n')
         else:
             f.write('Send cmd: Fail\r\n')
+        f.close();
         return ret
     return wrapper;
 
