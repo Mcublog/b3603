@@ -1,9 +1,22 @@
-﻿#!/usr/bin/python
-# encoding=utf8
+﻿from time import sleep
+import datetime
 
-from time import sleep
 
 from b3603_control import Control
+
+
+def log_cmd(func):
+    def wrapper(arg):
+        f = open('log.txt', 'a')
+        f.write(str(datetime.datetime.now()) + '\n')
+        f.write('Send cmd: ' + arg + '\n')
+        ret = func(arg);
+        if (ret):
+            f.write('Send cmd: OK\r\n')
+        else:
+            f.write('Send cmd: Fail\r\n')
+        return ret
+    return wrapper;
 
 
 def close_connect(cmdr):
@@ -14,6 +27,8 @@ def main():
     cmdr = Control('COM3')  # /dev/ttyUSB0 for Linux
     if cmdr.get_status() == 0:
         return close_connect(cmdr)
+        
+    cmdr.send_cmd = log_cmd(cmdr.send_cmd);
     
     if cmdr.send_cmd("VOLTAGE 3300") == 0:
         return close_connect(cmdr)

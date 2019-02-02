@@ -3,11 +3,10 @@ import time
 
 debug = 0  # Print debug message
 info_msg = 1  # Print info message
-#!/usr/bin/python
-# encoding=utf8
+
 
 class Control:
-    
+
 
     def __init__(self, port):
         self.__port = serial.Serial()
@@ -30,9 +29,9 @@ class Control:
     
     
     def __iprint(self, msg: str):
-    """
-    Print info message 
-    """
+        """
+        Print info message 
+        """
         if info_msg:
             print(msg)
 
@@ -46,10 +45,10 @@ class Control:
 
 
     def send_cmd(self, cmd):
-    """
-    Send B3603 command
-    return: array of strings or array with zero lenght
-    """
+        """
+        Send B3603 command
+        :return: array of strings or array with zero lenght
+        """
         ack = []
         if self.__connection == True:  # dummy protection
             if cmd.endswith('\n') == False:
@@ -71,9 +70,9 @@ class Control:
 
 
     def print_ack(self, data: []):
-    """
-    Print B3603 ACK
-    """
+        """
+        Print B3603 ACK
+        """
         if data:
             print('B3603 ACK:')
             for s in data:
@@ -81,19 +80,19 @@ class Control:
 
 
     def get_status(self):
-    """
-    Get connection status
-    return: true if connect
-    """
+        """
+        Get connection status
+        :return: true if connect
+        """
         return self.__connection
         
         
 
     def __read_ack(self):
-    """
-    Read B3603 ACK from port
-    return: array of strings or array with zero lenght    
-    """
+        """
+        Read B3603 ACK from port
+        :return: array of strings or array with zero lenght    
+        """
         for i in range(500):  # Waiting 500 ms maximum
             if self.__port.in_waiting:
                 break
