@@ -93,16 +93,20 @@ class Control:
         Read B3603 ACK from port
         :return: array of strings or array with zero lenght    
         """
-        for i in range(500):  # Waiting 500 ms maximum
+        for i in range(5):  # Waiting 500 ms maximum
             if self.__port.in_waiting:
                 break
             time.sleep(.1)  # Waiting 100 ms
-        if not self.__port.in_waiting:
+        if self.__port.in_waiting == False:
             print('Cmd was sent, but no response')
             return
         data = []
         while self.__port.in_waiting:
-            s: str = self.__port.readline().decode('utf-8')
+            try:
+                s = self.__port.readline().decode('utf-8')
+            except:
+                print('Data was corrupt')
+                return
             s = s.replace('\r\n', '')
             data.append(s)  # Remove \r\n
         return data
